@@ -25,7 +25,6 @@ class UserFactory extends Factory {
             'password' => bcrypt('password'),
             'username' => $this->faker->unique()->userName,
             'remember_token' => Str::random(10),
-            'role_id' => Role::where('name', 'client')->value('id') ?? 1,
         ];
     }
 
