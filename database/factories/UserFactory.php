@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\Role;
 
 
 class UserFactory extends Factory {
@@ -24,6 +25,7 @@ class UserFactory extends Factory {
             'password' => bcrypt('password'),
             'username' => $this->faker->unique()->userName,
             'remember_token' => Str::random(10),
+            'role_id' => Role::where('name', 'client')->value('id') ?? 1,
         ];
     }
 

@@ -17,6 +17,29 @@
         @csrf
         @method('patch')
 
+        <div x-data="{ username: '{{ old('username', auth()->user()->username) }}' }">
+            <label for="username" class="block font-medium text-sm text-gray-700">
+            @if (auth()->user()->username)
+                Nombre de usuario
+            @else
+                Ingresa un nombre de usuario (aún no tienes uno)
+            @endif
+            </label>
+
+        <input id="username" name="username" type="text"
+            x-model="username"
+            :class="username === '' ? 'bg-gray-100 text-gray-500 placeholder:text-gray-400' : 'bg-white'"
+            placeholder="Username"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition"
+            value="{{ old('username', auth()->user()->username) }}" />
+
+            @error('username')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
+
+
+
         <div>
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
