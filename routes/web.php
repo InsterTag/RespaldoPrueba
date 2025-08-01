@@ -27,3 +27,11 @@ require __DIR__.'/auth.php';
 Route::get('/homee', function(){
     return view('Homee');
 })->name('homee');
+
+Route::get('/products', function(){
+    return view('Products');
+})->name('products');
+
+Route::get('/profile', function(){
+    return view('Profile');
+})->name('profile');
