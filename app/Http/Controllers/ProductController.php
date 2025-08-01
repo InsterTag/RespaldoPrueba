@@ -12,7 +12,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::where('state', 'available')
+                          ->with('branch') // Si tienes relación con branch
+                          ->paginate(8); // 8 productos por página
+        return view('home', compact('products'));
     }
 
     /**

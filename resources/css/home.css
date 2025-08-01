@@ -1,0 +1,229 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Estilos base */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8fafc;
+    color: #333;
+}
+
+/* Contenedor principal */
+.max-w-7xl {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Barra lateral de filtros */
+.bg-white.rounded-xl.shadow-md {
+    transition: all 0.3s ease;
+    animation: slideUp 0.4s ease-out;
+    border: 1px solid #e2e8f0;
+}
+
+.bg-white.rounded-xl.shadow-md:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Tarjetas de producto */
+.bg-white.rounded-lg.shadow {
+    transition: all 0.3s ease;
+    animation: slideUp 0.5s ease-out;
+    animation-fill-mode: both;
+    border: 1px solid #edf2f7;
+}
+
+.bg-white.rounded-lg.shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 51, 102, 0.1);
+    border-color: #bee3f8;
+}
+
+/* Retraso en la animación para cada producto */
+.grid.grid-cols-1 > div {
+    animation-delay: calc(var(--animation-order) * 0.1s);
+}
+
+/* Slider de precios (mejorado) */
+.price-range-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(to right, #ebf8ff, #90cdf4, #3182ce);
+    outline: none;
+    margin: 15px 0;
+}
+
+.price-range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #3182ce;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.price-range-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #2c5282;
+}
+
+/* Inputs de precio */
+input[type="number"] {
+    transition: all 0.2s ease;
+    border: 1px solid #cbd5e0;
+}
+
+input[type="number"]:focus {
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+}
+
+/* Botones */
+.bg-blue-600 {
+    transition: all 0.3s ease;
+    background-color: #3182ce;
+    letter-spacing: 0.5px;
+}
+
+.bg-blue-600:hover {
+    background-color: #2b6cb0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bg-blue-600:active {
+    transform: translateY(0);
+}
+
+/* Checkboxes de categorías */
+input[type="checkbox"] {
+    transition: all 0.2s ease;
+    border-color: #cbd5e0;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #3182ce;
+    border-color: #3182ce;
+}
+
+/* Estado de productos */
+.text-xs.px-2.py-1.rounded {
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.bg-green-100.text-green-800 {
+    background-color: #f0fff4;
+    color: #2f855a;
+}
+
+.bg-red-100.text-red-800 {
+    background-color: #fff5f5;
+    color: #c53030;
+}
+
+/* Paginación */
+nav.inline-flex.rounded-md.shadow a,
+nav.inline-flex.rounded-md.shadow span {
+    transition: all 0.2s ease;
+    border-color: #e2e8f0;
+}
+
+nav.inline-flex.rounded-md.shadow a:hover {
+    background-color: #ebf8ff;
+    color: #2b6cb0;
+    border-color: #bee3f8;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3182ce;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #2c5282;
+}
+
+/* Efecto de carga para imágenes */
+.relative.h-48.bg-gray-100 {
+    position: relative;
+    overflow: hidden;
+}
+
+.relative.h-48.bg-gray-100::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, #f8fafc 25%, #e2e8f0 50%, #f8fafc 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Efecto ripple para botones */
+.btn-ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-ripple:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform .5s, opacity 1s;
+}
+
+.btn-ripple:active:after {
+    transform: scale(0, 0);
+    opacity: .3;
+    transition: 0s;
+}

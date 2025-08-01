@@ -31,5 +31,12 @@ class Product extends Model {
     public function characteristics() {
     return $this->belongsToMany(Characteristic::class, 'characteristic_category_product')->withTimestamps();
     }
+
+
+    // Accesor para la URL de la imagen
+    public function getImageUrlAttribute()
+    {
+        return $this->media ? asset('storage/' . $this->media) : asset('images/default-product.png');
+    }
     
 }
