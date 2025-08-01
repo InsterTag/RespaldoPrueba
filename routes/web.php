@@ -23,3 +23,7 @@ Route::get('/home', [ProductController::class, 'index'])->name('home');
 Route::get('/bar', function () {return view('layouts.navegacion');});
 
 require __DIR__.'/auth.php';
+
+Route::get('/homee', function(){
+    return view('Homee');
+})->name('homee');
