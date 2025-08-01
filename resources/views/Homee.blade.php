@@ -236,8 +236,8 @@
                     <div class="flex-1 max-w-md">
                         <div class="relative">
                             <input type="text"
-                                   placeholder="Buscar productos..."
-                                   class="search-input w-full pl-10 pr-4 py-2 border custom-border rounded-lg focus:outline-none custom-bg-white">
+                                placeholder="Buscar productos..."
+                                class="search-input w-full pl-10 pr-4 py-2 border custom-border rounded-lg focus:outline-none custom-bg-white">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <i class="fas fa-search custom-text-secondary"></i>
                             </div>
@@ -248,7 +248,7 @@
                 <div class="flex items-center space-x-4">
                     <button id="loginBtn" class="navbar-button custom-text-primary hover:custom-primary font-medium px-3 py-2 flex items-center space-x-1">
                         <i class="fas fa-user"></i>
-                        <span class="hidden sm:inline">Iniciar Sesión</span>
+                        <span class="hidden sm:inline">Inicio / Registro</span>
                         <i class="fas fa-chevron-down text-xs transition-transform duration-300" id="loginIcon"></i>
                     </button>
 
@@ -270,7 +270,7 @@
             <div class="px-4 py-3 space-y-3">
                 <div class="relative mb-3">
                     <input type="text" placeholder="Buscar productos..."
-                           class="search-input w-full pl-10 pr-4 py-2 border custom-border rounded-lg focus:outline-none">
+                        class="search-input w-full pl-10 pr-4 py-2 border custom-border rounded-lg focus:outline-none">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fas fa-search custom-text-secondary"></i>
                     </div>
@@ -295,10 +295,11 @@
                     <button class="w-full p-4 border-2 custom-border rounded-lg hover:custom-hover-bg transition-all duration-300 group">
                         <div class="flex items-center justify-center space-x-3">
                             <i class="fas fa-user custom-primary text-lg group-hover:scale-110 transition-transform duration-300"></i>
-                            <div class="text-left">
+                            <a href="{{route('products')}}">                            <div class="text-left">
                                 <h3 class="font-medium custom-text-primary">Cliente</h3>
                                 <p class="text-sm custom-text-secondary">Compra productos</p>
                             </div>
+                            </a>
                         </div>
                     </button>
                     <button class="w-full p-4 border-2 custom-border rounded-lg hover:custom-hover-bg transition-all duration-300 group">
@@ -314,6 +315,7 @@
             </div>
         </div>
     </div>
+
     <!-- Main Content -->
     <main>
         <!-- Hero Section with Feature Cards -->
