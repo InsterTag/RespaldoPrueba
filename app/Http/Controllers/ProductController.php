@@ -15,7 +15,7 @@ class ProductController extends Controller
         $products = Product::where('state', 'available')
                           ->with('branch') // Si tienes relación con branch
                           ->paginate(8); // 8 productos por página
-        return view('home', compact('products'));
+        return view('products', compact('products'));
     }
 
     /**

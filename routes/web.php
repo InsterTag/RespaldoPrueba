@@ -8,7 +8,8 @@ use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('home');
-})->middleware(['auth', 'verified'])->name('home');
+})->name('home');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -17,13 +18,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::get('/products', [ProductController::class, 'index'])->name('pruducts');
 
-Route::get('/home', [ProductController::class, 'index'])->name('home');
-
-Route::get('/bar', function () {return view('layouts.navegacion');});
 
 require __DIR__.'/auth.php';
-
-Route::get('/homee', function(){
-    return view('Homee');
-})->name('homee');

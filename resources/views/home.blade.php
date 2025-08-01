@@ -1,173 +1,287 @@
-@vite(['resources/js/home.js', 'resources/css/home.css'])
-<x-app-layout>
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="container mx-auto px-4 flex flex-col md:flex-row">
-                <!-- Filters Sidebar -->
-                <div class="w-full md:w-72 flex-shrink-0 mb-6 md:mb-0 md:mr-6">
-                    <div class="bg-white rounded-xl shadow-md p-5 sticky top-24 border border-gray-100">
-                        <!-- Header -->
-                        <div class="flex justify-between items-center mb-5 pb-3 border-b border-gray-200">
-                            <h3 class="font-bold text-lg text-gray-800 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                                </svg>
-                                Filtros
-                            </h3>
-                            <button class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center">
-                                Limpiar
-                            </button>
-                        </div>
-                        
-                        <!-- Price Filter -->
-                        <div class="mb-6 pb-4 border-b border-gray-200">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-sm text-gray-600">Rango de precios:</span>
-                                <span class="text-sm font-medium bg-blue-50 text-blue-600 px-2 py-1 rounded">$0 - $1000</span>
-                            </div>
-                            <input 
-                                type="range" 
-                                min="0" 
-                                max="1000" 
-                                value="500" 
-                                class="price-range-slider w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer mb-4"
-                            >
-                            <div class="flex justify-between">
-                                <input 
-                                    type="number" 
-                                    min="0" 
-                                    max="999" 
-                                    value="0" 
-                                    class="w-20 border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-blue-400 focus:border-blue-400"
-                                    placeholder="Mín"
-                                >
-                                <input 
-                                    type="number" 
-                                    min="1" 
-                                    max="1000" 
-                                    value="1000" 
-                                    class="w-20 border border-gray-300 rounded-md px-3 py-1 text-sm focus:ring-blue-400 focus:border-blue-400"
-                                    placeholder="Máx"
-                                >
-                            </div>
-                        </div>
-                        
-                        <!-- Categories Filter -->
-                        <div class="mb-6 pb-4 border-b border-gray-200">
-                            <h4 class="font-medium text-gray-700 mb-3">Categorías</h4>
-                            <div class="space-y-2">
-                                @foreach(['Electrónica', 'Ropa', 'Hogar'] as $category)
-                                <label class="flex items-center justify-between cursor-pointer">
-                                    <div class="flex items-center">
-                                        <input type="checkbox" class="rounded text-blue-600 mr-2">
-                                        <span class="text-sm">{{ $category }}</span>
-                                    </div>
-                                    <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">156</span>
-                                </label>
-                                @endforeach
-                            </div>
-                        </div>
+@extends('layouts.home')
 
-                        <button class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors">
-                            Aplicar Filtros
-                        </button>
-                    </div>
+@section('content')
+
+    <!-- Modal Login -->
+    <div id="loginModal" class="login-modal fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+        <div class="login-modal-content custom-bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold custom-text-primary">Iniciar Sesión</h2>
+                    <button id="closeLoginModal" class="custom-text-secondary hover:custom-text-primary">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
                 </div>
-                
-                <!-- Products Grid -->
-                <div class="flex-1">
-                    <!-- Products Header -->
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 bg-white rounded-lg shadow p-4">
-                        <div class="mb-4 md:mb-0">
-                            <h2 class="text-2xl font-bold text-gray-800">Todos los productos</h2>
-                            <p class="text-sm text-gray-600">Mostrando {{ $products->firstItem() }}-{{ $products->lastItem() }} de {{ $products->total() }} productos</p>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <select class="border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-                                <option>Ordenar porㅤ</option>
-                                <option>Menor precio</option>
-                                <option>Mayor precio</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        @foreach($products as $product)
-                        <div class="bg-white rounded-lg shadow overflow-hidden transition duration-300 hover:shadow-md">
-                            <!-- Product Image -->
-                            <div class="relative h-48 bg-gray-100 flex items-center justify-center">
-                                @if($product->media)
-                                <img src="{{ asset('storage/' . $product->media) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
-                                @else
-                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                                @endif
-                            </div>
-                            
-                            <!-- Product Info -->
-                            <div class="p-4">
-                                <h3 class="font-medium text-gray-900 mb-1">{{ $product->name }}</h3>
-                                <p class="text-xs text-gray-500 mb-3">{{ Str::limit($product->description, 50) }}</p>
-                                
-                                <div class="flex items-center justify-between">
-                                    <span class="text-lg font-bold text-gray-900">${{ number_format($product->unit_price, 2) }}</span>
-                                    <button class="text-blue-600 hover:text-blue-800">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                                
-                                <div class="mt-2">
-                                    <span class="text-xs px-2 py-1 rounded {{ $product->state == 'available' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                        {{ $product->state == 'available' ? 'Disponible' : 'Agotado' }}
-                                    </span>
-                                </div>
+                <div class="space-y-4">
+                    <button class="w-full p-4 border-2 custom-border rounded-lg hover:custom-hover-bg transition-all duration-300 group">
+                        <div class="flex items-center justify-center space-x-3">
+                            <i class="fas fa-user custom-primary text-lg group-hover:scale-110 transition-transform duration-300"></i>
+                            <div class="text-left">
+                                <h3 class="font-medium custom-text-primary">Cliente</h3>
+                                <p class="text-sm custom-text-secondary">Compra productos</p>
                             </div>
                         </div>
-                        @endforeach
-                    </div>
-                    
-                    <div class="mt-8 flex justify-center">
-                        <nav class="inline-flex rounded-md shadow">
-                            @if ($products->onFirstPage())
-                            <span class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-400 cursor-not-allowed">
-                                <i class="fas fa-chevron-left"></i>
-                            </span>
-                            @else
-                            <a href="{{ $products->previousPageUrl() }}" class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
-                                <i class="fas fa-chevron-left"></i>
-                            </a>
-                            @endif
-                            
-                            {{-- Números de página --}}
-                            @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
-                                @if ($page == $products->currentPage())
-                                    <span class="px-4 py-2 border-t border-b border-gray-300 bg-white text-blue-600 font-medium hover:bg-blue-50">
-                                    {{ $page }}
-                                    </span>
-                                @else
-                                    <a href="{{ $url }}" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
-                                    {{ $page }}
-                                    </a>
-                                @endif
-                            @endforeach
-                                    
-                        {{-- Botón Siguiente --}}
-                            @if ($products->hasMorePages())
-                                <a href="{{ $products->nextPageUrl() }}" class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            @else
-                                <span class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-400 cursor-not-allowed">
-                                <i class="fas fa-chevron-right"></i>
-                                </span>
-                            @endif
-                        </nav>
-                    </div>
+                    </button>
+                    <button class="w-full p-4 border-2 custom-border rounded-lg hover:custom-hover-bg transition-all duration-300 group">
+                        <div class="flex items-center justify-center space-x-3">
+                            <i class="fas fa-building custom-secondary text-lg group-hover:scale-110 transition-transform duration-300"></i>
+                            <div class="text-left">
+                                <h3 class="font-medium custom-text-primary">Empresa</h3>
+                                <p class="text-sm custom-text-secondary">Vende productos</p>
+                            </div>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+
+
+    
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section with Feature Cards -->
+        <section class="gradient-bg py-16" id="hero-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-fade-in">
+                    <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
+                        Conecta tu <span class="text-blue-600">Empresa</span><br>
+                        con el <span class="text-blue-600">Mundo</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                        La plataforma líder donde empresas publican sus productos y clientes encuentran exactamente lo que buscan.
+                    </p>
+                </div>
+                <!-- Feature Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mt-16">
+                    <!-- Card 1: Registro Empresarial -->
+                    <div class="bg-white rounded-xl p-6 card-hover animate-fade-in shadow-lg">
+                        <div class="bg-blue-100 w-16 h-16 rounded-xl flex items-center justify-center mb-4 floating-animation">
+                            <i class="fas fa-building text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Registra tu Empresa</h3>
+                        <p class="text-gray-600 text-sm mb-4">Únete a nuestra plataforma y amplía tu alcance comercial sin límites.</p>
+                        <button class="text-blue-600 font-medium text-sm hover:text-blue-800 transition-colors">
+                            Comenzar ahora →
+                        </button>
+                    </div>
+                    <!-- Card 2: Gestión de Productos -->
+                    <div class="bg-white rounded-xl p-6 card-hover animate-fade-in shadow-lg">
+                        <div class="bg-green-100 w-16 h-16 rounded-xl flex items-center justify-center mb-4 floating-animation">
+                            <i class="fas fa-boxes text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Gestiona Productos</h3>
+                        <p class="text-gray-600 text-sm mb-4">Sube, edita y organiza tu catálogo de forma rápida y sencilla.</p>
+                        <button class="text-green-600 font-medium text-sm hover:text-green-800 transition-colors">
+                            Explorar funciones →
+                        </button>
+                    </div>
+                    <!-- Card 3: Pagos Seguros -->
+                    <div class="bg-white rounded-xl p-6 card-hover animate-fade-in shadow-lg">
+                        <div class="bg-yellow-100 w-16 h-16 rounded-xl flex items-center justify-center mb-4 floating-animation">
+                            <i class="fas fa-credit-card text-yellow-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Pagos Seguros</h3>
+                        <p class="text-gray-600 text-sm mb-4">Procesa pagos de forma segura con múltiples métodos disponibles.</p>
+                        <button class="text-yellow-600 font-medium text-sm hover:text-yellow-800 transition-colors">
+                            Ver métodos →
+                        </button>
+                    </div>
+                    <!-- Card 4: Analytics -->
+                    <div class="bg-white rounded-xl p-6 card-hover animate-fade-in shadow-lg">
+                        <div class="bg-purple-100 w-16 h-16 rounded-xl flex items-center justify-center mb-4 floating-animation">
+                            <i class="fas fa-chart-line text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Analytics Avanzado</h3>
+                        <p class="text-gray-600 text-sm mb-4">Obtén insights detallados sobre tus ventas y rendimiento.</p>
+                        <button class="text-purple-600 font-medium text-sm hover:text-purple-800 transition-colors">
+                            Ver estadísticas →
+                        </button>
+                    </div>
+                    <!-- Card 5: Soporte 24/7 -->
+                    <div class="bg-white rounded-xl p-6 card-hover animate-fade-in shadow-lg">
+                        <div class="bg-red-100 w-16 h-16 rounded-xl flex items-center justify-center mb-4 floating-animation">
+                            <i class="fas fa-headset text-red-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Soporte 24/7</h3>
+                        <p class="text-gray-600 text-sm mb-4">Nuestro equipo está disponible para ayudarte en todo momento.</p>
+                        <button class="text-red-600 font-medium text-sm hover:text-red-800 transition-colors">
+                            Contactar soporte →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Best Sellers Section -->
+        <section class="py-16 bg-white section-separator" id="bestsellers-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center mb-8 animate-fade-in">
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-900">Productos Más Vendidos</h2>
+                        <p class="text-gray-600 mt-2">Los favoritos de esta semana</p>
+                    </div>
+                    <button class="primary-btn text-white px-6 py-2 rounded-lg font-medium">
+                        Ver todos
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Product Card -->
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden card-hover animate-fade-in">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=200&fit=crop" alt="Producto" class="w-full h-48 object-cover">
+                            <span class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs font-medium">-20%</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Auriculares Premium</h3>
+                            <p class="text-gray-600 text-sm mb-2">TechCorp S.A.</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-lg font-bold text-blue-600">$79.99</span>
+                                    <span class="text-sm text-gray-500 line-through">$99.99</span>
+                                </div>
+                                <div class="flex items-center text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <span class="text-gray-600 text-sm ml-1">4.8</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More product cards (similar structure) -->
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden card-hover animate-fade-in">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=200&fit=crop" alt="Producto" class="w-full h-48 object-cover">
+                            <span class="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-md text-xs font-medium pulse-animation">NUEVO</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Reloj Inteligente</h3>
+                            <p class="text-gray-600 text-sm mb-2">SmartWatch Co.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-lg font-bold text-blue-600">$199.99</span>
+                                <div class="flex items-center text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <span class="text-gray-600 text-sm ml-1">4.9</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden card-hover animate-fade-in">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&h=200&fit=crop" alt="Producto" class="w-full h-48 object-cover">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Gafas de Sol</h3>
+                            <p class="text-gray-600 text-sm mb-2">Fashion Style</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-lg font-bold text-blue-600">$45.99</span>
+                                <div class="flex items-center text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <span class="text-gray-600 text-sm ml-1">4.7</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden card-hover animate-fade-in">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=200&fit=crop" alt="Producto" class="w-full h-48 object-cover">
+                            <span class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs font-medium">-35%</span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-gray-900 mb-2">Zapatillas Deportivas</h3>
+                            <p class="text-gray-600 text-sm mb-2">SportMax</p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-lg font-bold text-blue-600">$89.99</span>
+                                    <span class="text-sm text-gray-500 line-through">$139.99</span>
+                                </div>
+                                <div class="flex items-center text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <span class="text-gray-600 text-sm ml-1">4.6</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Big Discounts Section -->
+        <section class="py-16 gradient-bg section-separator" id="discounts-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-fade-in">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">🔥 Ofertas Especiales</h2>
+                    <p class="text-gray-600">Descuentos increíbles por tiempo limitado</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Large Discount Banner -->
+                    <div class="lg:col-span-2 bg-gradient-to-r from-red-500 to-pink-600 rounded-2xl p-8 text-white card-hover animate-fade-in">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-6xl font-bold">50%</span>
+                                <p class="text-xl mt-2">Descuento en Electrónicos</p>
+                                <p class="opacity-90 mt-2">Solo por este fin de semana</p>
+                                <button class="bg-white text-red-600 px-6 py-3 rounded-lg font-medium mt-4 hover:bg-gray-100 transition-colors">
+                                    Comprar ahora
+                                </button>
+                            </div>
+                            <i class="fas fa-bolt text-8xl opacity-20"></i>
+                        </div>
+                    </div>
+                    <!-- Side Offers -->
+                    <div class="space-y-4">
+                        <div class="bg-blue-600 text-white p-6 rounded-xl card-hover animate-fade-in">
+                            <h3 class="text-xl font-bold">Envío Gratis</h3>
+                            <p class="text-blue-100 mt-1">En compras superiores a $50</p>
+                            <button class="text-white underline mt-2">Ver detalles</button>
+                        </div>
+                        <div class="bg-green-600 text-white p-6 rounded-xl card-hover animate-fade-in">
+                            <h3 class="text-xl font-bold">Cashback 10%</h3>
+                            <p class="text-green-100 mt-1">En tu primera compra</p>
+                            <button class="text-white underline mt-2">Activar oferta</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Info Cards Section -->
+        <section class="py-16 bg-white section-separator" id="info-section">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Payment Security -->
+                    <div class="text-center animate-fade-in">
+                        <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-shield-alt text-blue-600 text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Pagos Seguros</h3>
+                        <p class="text-gray-600">Con Mercado Pago, paga en cuotas y aprovecha la comodidad de financiación que te da tu banco, o hazlo con efectivo en puntos de pago. ¡Y siempre es seguro!</p>
+                        <button class="text-blue-600 font-medium mt-3 hover:text-blue-800 transition-colors">
+                            Cómo pagar con MarketPlace Pro
+                        </button>
+                    </div>
+                    <!-- Free Shipping -->
+                    <div class="text-center animate-fade-in">
+                        <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-truck text-green-600 text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Envío gratis desde $60.000</h3>
+                        <p class="text-gray-600">Con solo estar registrado en MarketPlace Pro, tienes envíos gratis en miles de productos seleccionados.</p>
+                        <button class="text-green-600 font-medium mt-3 hover:text-green-800 transition-colors">
+                            Conocer beneficios de envío
+                        </button>
+                    </div>
+                    <!-- Security First -->
+                    <div class="text-center animate-fade-in">
+                        <div class="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-user-shield text-purple-600 text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Seguridad, de principio a fin</h3>
+                        <p class="text-gray-600">¿No te gusta? ¡Devuélvelo! En MarketPlace Pro, no hay nada que no puedas hacer, porque estás siempre protegido.</p>
+                        <button class="text-purple-600 font-medium mt-3 hover:text-purple-800 transition-colors">
+                            Cómo te protegemos
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+
+@endsection
